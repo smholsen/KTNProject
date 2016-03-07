@@ -47,6 +47,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
                 if received['request'] == 'login':
                     if self.username != "":
+                        print("allrdy logged in")
                         self.error('You are allready logged in.')
                     else:
                         # If request from received payload was login -> do it
@@ -159,10 +160,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                         user.send(message)
 
     def error(self, errormessage):
-        if self.username == "":
-            message = json.dumps({'timestamp': int(time.time()), 'sender': 'Server', 'response': 'err',
-                                  'content': errormessage})
-            self.send(message)
+
+        message = json.dumps({'timestamp': int(time.time()), 'sender': 'Server', 'response': 'err',
+                              'content': errormessage})
+        self.send(message)
 
     def history(self):
         if self.username in server.active_names:
