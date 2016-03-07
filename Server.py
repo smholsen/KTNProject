@@ -46,8 +46,11 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                 received = json.loads(received0)
 
                 if received['request'] == 'login':
-                    # If request from received payload was login -> do it
-                    self.login(received['content'])
+                    if self.username != "":
+                        self.error('You are allready logged in.')
+                    else:
+                        # If request from received payload was login -> do it
+                        self.login(received['content'])
 
                 elif received['request'] == 'logout':
                     # If request from received payload was logout -> do it
@@ -131,7 +134,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
     def help(self):
         payload = json.dumps({'timestamp': int(time.time()), 'sender': '[Help]', 'response': 'info',
-                              'content': 'Avaleable commands: login "username", logout, names, help, '
+                              'content': 'Availeable commands: login "username", logout, names, help, '
                                          'msg "message"'})
         self.send(payload)
 
@@ -164,6 +167,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     def history(self):
         if self.username in server.active_names:
             for message in server.history:
+                # The sleep prevents the program from crashing when sending multiple packets.
                 time.sleep(0.2)
                 self.send(message)
         else:

@@ -89,7 +89,6 @@ class Client:
         pass
 
     def receive_message(self, message):
-        # TODO: Handle incoming message
         # If there is no readable value just ignore
         try:
             message = json.loads(message)
@@ -103,7 +102,6 @@ class Client:
             print '[ERROR]', message['content']
 
     def send_payload(self, data):
-        # TODO: Handle sending of a payload
         # Assuming data is now formatted as JSON
         # Send TCP Header
 
